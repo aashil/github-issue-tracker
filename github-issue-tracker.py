@@ -1,12 +1,9 @@
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+import urllib2
+import json
 
-driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver")
-driver.get("https://github.com/scikit-learn/scikit-learn/issues")
+url = "https://api.github.com/repos/scikit-learn/scikit-learn/issues?labels=easy"
 
-elem = driver.find_element_by_id("js-issues-search")
-elem.clear()
-elem.send_keys("is:open is:issue label:Easy")
-elem.send_keys(Keys.RETURN)
-driver.close()
+resp = urllib2.urlopen(url).read()
+json_resp = json.loads(resp)
 
+print type(json_resp)
