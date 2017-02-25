@@ -5,17 +5,28 @@ from time import sleep
 
 labels = "easy"
 url = "https://api.github.com/repos/scikit-learn/scikit-learn/issues?labels="+labels
-old_time = dt.datetime.utcfromtimestamp(0).isoformat()
+begin_time = dt.datetime.utcnow().isoformat()
+issues = set()
 
 while True:
 
 	resp = urllib2.urlopen(url).read()
 	json_resp = json.loads(resp)
+	issue_count = 0
 
-	new_time = json_resp[0]["created_at"]
 
-	if new_time > old_time:
-		old_time = new_time
-		print "A new easy issue has been created at "+ old_time
+	for data in json_resp:
 
-	sleep(60*15)
+		if data["number"] in issues:
+			continue
+
+		issues.add(data["number"])
+
+		if data["created_at"] > old_time:
+			issue_count += 1
+			old_time = data["created_at"]
+
+	if issue_count > 0:
+		print str(issue_count) + " new issues available"
+
+	sleep(15*60)
