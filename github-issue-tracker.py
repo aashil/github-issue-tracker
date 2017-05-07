@@ -6,7 +6,10 @@ import configparser
 from time import sleep
 
 labels = "easy"
-url = "https://api.github.com/repos/scikit-learn/scikit-learn/issues?labels="+labels
+org = raw_input("Please enter the organization where the repo is hosted: ")
+repo = raw_input("Please enter the repo name: ")
+labels = raw_input("Enter labels to track: ")
+url = "https://api.github.com/repos/" + org + "/" + repo + "/issues?labels=" + labels
 begin_time = dt.datetime.utcnow().isoformat()
 issues = set()
 
